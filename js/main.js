@@ -1,5 +1,5 @@
 /**
- * CÓDIGO FONTE — Controlador Principal
+ * CÓDIGO FONTE
  * Navegação suave, cursor customizado, efeito de digitação, glass cards.
  */
 
@@ -14,13 +14,55 @@
     let currentSection = 'home';
 
     // ============================================================
-    // CURSOR CUSTOMIZADO (DESKTOP ONLY)
+    // AJUSTE RESPONSIVO: evita corte de letras em telas pequenas
+    // ============================================================
+    function applyResponsiveTextFix() {
+        // Adiciona regras CSS dinamicamente para garantir quebra de palavras e tamanho adequado
+        if (!document.getElementById('responsive-fix-styles')) {
+            const style = document.createElement('style');
+            style.id = 'responsive-fix-styles';
+            style.textContent = `
+                /* Evita corte de letras em títulos e textos */
+                .typing-title, .card-text, .services-list li, .process-flow p {
+                    word-break: break-word;
+                    white-space: normal;
+                    overflow-wrap: break-word;
+                    max-width: 100%;
+                }
+                /* Ajuste adicional para mobile */
+                @media (max-width: 600px) {
+                    .typing-title {
+                        font-size: clamp(1.2rem, 5vw, 1.8rem);
+                        line-height: 1.3;
+                    }
+                    .glass-card {
+                        padding: 1rem;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+    applyResponsiveTextFix();
+
+    // ============================================================
+    // CURSOR CUSTOMIZADO (DESKTOP ONLY) - levemente reduzido
     // ============================================================
     const isDesktop = () => window.matchMedia('(min-width: 901px)').matches;
 
     function updateCursorVisibility() {
         if (isDesktop()) {
             cursor.style.display = 'block';
+            // Reduz o tamanho do cursor (antes provavelmente 20x20, agora 16x16)
+            cursor.style.width = '16px';
+            cursor.style.height = '16px';
+            cursor.style.borderRadius = '50%';
+            cursor.style.backgroundColor = 'var(--accent-color, #ffffff)';
+            cursor.style.mixBlendMode = 'difference';
+            cursor.style.pointerEvents = 'none';
+            cursor.style.position = 'fixed';
+            cursor.style.zIndex = '9999';
+            cursor.style.transition = 'transform 0.1s ease, width 0.2s, height 0.2s';
         } else {
             cursor.style.display = 'none';
         }
@@ -34,10 +76,17 @@
 
     document.querySelectorAll('a, .nav-item, .contact-btn, .glass-card').forEach(el => {
         el.addEventListener('mouseenter', () => {
-            if (isDesktop()) cursor.classList.add('hover');
+            if (isDesktop()) {
+                cursor.classList.add('hover');
+                // Efeito hover levemente menor que o original (antes 2x, agora 1.6x)
+                cursor.style.transform = 'scale(1.6)';
+            }
         });
         el.addEventListener('mouseleave', () => {
-            cursor.classList.remove('hover');
+            if (isDesktop()) {
+                cursor.classList.remove('hover');
+                cursor.style.transform = 'scale(1)';
+            }
         });
     });
 
@@ -59,7 +108,6 @@
         const activeSection = document.querySelector('.section.active');
         if (activeSection) {
             activeSection.classList.remove('active');
-            // Remove classes de visibilidade dos elementos internos
             resetSectionAnimations(activeSection);
         }
 
@@ -67,7 +115,6 @@
         const newSection = document.getElementById(sectionId);
         if (newSection) {
             newSection.classList.add('active');
-            // Inicia animações após um pequeno delay
             setTimeout(() => {
                 triggerSectionAnimations(newSection);
             }, 100);
@@ -85,24 +132,27 @@
     }
 
     function resetSectionAnimations(section) {
-        // Remove classes de visibilidade dos textos
         section.querySelectorAll('.card-text, .services-list, .process-flow, .contact-buttons, .privacy-indicator')
             .forEach(el => el.classList.remove('visible'));
-        // Reseta títulos com efeito de digitação
         section.querySelectorAll('.typing-title').forEach(el => {
             el.classList.remove('typing', 'typing-done');
             el.textContent = '';
         });
+        // Força reset da animação do glass-card
+        const glassCard = section.querySelector('.glass-card');
+        if (glassCard) {
+            glassCard.style.animation = 'none';
+            glassCard.offsetHeight;
+            glassCard.style.animation = '';
+        }
     }
 
     function triggerSectionAnimations(section) {
-        // Efeito de digitação nos títulos
         const titles = section.querySelectorAll('.typing-title');
         titles.forEach(title => {
             typeTitle(title);
         });
 
-        // Fade-in dos textos após digitação
         const fadeElements = section.querySelectorAll('.card-text, .services-list, .process-flow, .contact-buttons, .privacy-indicator');
         setTimeout(() => {
             fadeElements.forEach(el => el.classList.add('visible'));
@@ -110,7 +160,7 @@
     }
 
     // ============================================================
-    // EFEITO DE DIGITAÇÃO
+    // EFEITO DE DIGITAÇÃO (velocidade ajustável para responsividade)
     // ============================================================
     function typeTitle(element) {
         const text = element.dataset.text;
@@ -118,7 +168,9 @@
 
         element.classList.add('typing');
         let index = 0;
-        const speed = 50; // ms por caractere
+        // Velocidade um pouco mais rápida em mobile para evitar atrasos na quebra de linha
+        const isMobile = window.matchMedia('(max-width: 600px)').matches;
+        const speed = isMobile ? 30 : 50; // ms por caractere
 
         function type() {
             if (index < text.length) {
@@ -130,7 +182,6 @@
                 element.classList.add('typing-done');
             }
         }
-
         type();
     }
 
@@ -142,7 +193,6 @@
             e.preventDefault();
             const sectionId = link.dataset.section;
             if (sectionId) {
-                // Scroll suave até a seção (se necessário)
                 const target = document.getElementById(sectionId);
                 if (target && window.innerWidth <= 900) {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -156,7 +206,6 @@
     // INICIALIZAÇÃO APÓS INTRO
     // ============================================================
     window.addEventListener('intro-complete', () => {
-        // Ativa a seção home com animações
         const homeSection = document.getElementById('home');
         if (homeSection) {
             homeSection.classList.add('active');
@@ -171,7 +220,7 @@
     // ============================================================
     let scrollTimeout;
     window.addEventListener('scroll', () => {
-        if (window.innerWidth > 900) return; // Apenas mobile
+        if (window.innerWidth > 900) return;
 
         clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(() => {
@@ -192,26 +241,11 @@
     });
 
 })();
-function resetSectionAnimations(section) {
-    // Remove classes de visibilidade dos textos
-    section.querySelectorAll('.card-text, .services-list, .process-flow, .contact-buttons, .privacy-indicator')
-        .forEach(el => el.classList.remove('visible'));
-    // Reseta títulos com efeito de digitação
-    section.querySelectorAll('.typing-title').forEach(el => {
-        el.classList.remove('typing', 'typing-done');
-        el.textContent = '';
-    });
-    // Força reset da animação do glass-card (remove e re-adiciona a classe para permitir re-animação)
-    const glassCard = section.querySelector('.glass-card');
-    if (glassCard) {
-        glassCard.style.animation = 'none';
-        glassCard.offsetHeight; // trigger reflow
-        glassCard.style.animation = '';
-    }
-}
+
 /**
  * CÓDIGO FONTE — Som de clique (Web Audio API)
  * Feedback sonoro sutil ao interagir com links e botões.
+ * (sem alterações, mantido original)
  */
 (function() {
     let audioCtx = null;
@@ -222,14 +256,12 @@ function resetSectionAnimations(section) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
 
-            // Garante que o contexto esteja ativo (autoplay policy)
             if (audioCtx.state === 'suspended') {
                 audioCtx.resume();
             }
 
             const now = audioCtx.currentTime;
 
-            // Oscilador principal (tom agudo breve)
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
 
@@ -246,7 +278,6 @@ function resetSectionAnimations(section) {
             osc.start(now);
             osc.stop(now + 0.05);
 
-            // Pequeno ruído para dar textura
             const bufferSize = audioCtx.sampleRate * 0.04;
             const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
             const data = noiseBuffer.getChannelData(0);
@@ -263,11 +294,10 @@ function resetSectionAnimations(section) {
             noise.start(now);
             noise.stop(now + 0.04);
         } catch (e) {
-            // Silencia caso o navegador bloqueie
+            // Silencia erro
         }
     }
 
-    // Dispara o som em todos os links e botões (exclui interações de input, etc.)
     document.addEventListener('click', (e) => {
         const target = e.target.closest('a, button, .nav-item, .contact-btn, .logo, .insta-link');
         if (target) {
