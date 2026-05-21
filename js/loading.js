@@ -38,6 +38,6 @@
     // Inicia após o carregamento da página
     window.addEventListener('load', () => {
         // Pequeno delay para garantir que tudo carregou
-        setTimeout(startIntro, 300);
+        setTimeout(startIntro, 250);
     });
 })();
