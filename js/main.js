@@ -17,19 +17,16 @@
     // AJUSTE RESPONSIVO: evita corte de letras em telas pequenas
     // ============================================================
     function applyResponsiveTextFix() {
-        // Adiciona regras CSS dinamicamente para garantir quebra de palavras e tamanho adequado
         if (!document.getElementById('responsive-fix-styles')) {
             const style = document.createElement('style');
             style.id = 'responsive-fix-styles';
             style.textContent = `
-                /* Evita corte de letras em títulos e textos */
                 .typing-title, .card-text, .services-list li, .process-flow p {
                     word-break: break-word;
                     white-space: normal;
                     overflow-wrap: break-word;
                     max-width: 100%;
                 }
-                /* Ajuste adicional para mobile */
                 @media (max-width: 600px) {
                     .typing-title {
                         font-size: clamp(1.2rem, 5vw, 1.8rem);
@@ -46,23 +43,26 @@
     applyResponsiveTextFix();
 
     // ============================================================
-    // CURSOR CUSTOMIZADO (DESKTOP ONLY) - levemente reduzido
+    // CURSOR CUSTOMIZADO (DESKTOP ONLY) – menor, transparente e com expansão
     // ============================================================
     const isDesktop = () => window.matchMedia('(min-width: 901px)').matches;
 
     function updateCursorVisibility() {
         if (isDesktop()) {
             cursor.style.display = 'block';
-            // Reduz o tamanho do cursor (antes provavelmente 20x20, agora 16x16)
-            cursor.style.width = '16px';
-            cursor.style.height = '16px';
+            // Tamanho reduzido: 12x12 (antes 16x16)
+            cursor.style.width = '12px';
+            cursor.style.height = '12px';
             cursor.style.borderRadius = '50%';
-            cursor.style.backgroundColor = 'var(--accent-color, #ffffff)';
-            cursor.style.mixBlendMode = 'difference';
+            cursor.style.backgroundColor = 'transparent'; // FUNDO TRANSPARENTE
+            cursor.style.border = '1.5px solid var(--accent)'; // borda verde
+            cursor.style.mixBlendMode = 'screen';
             cursor.style.pointerEvents = 'none';
             cursor.style.position = 'fixed';
             cursor.style.zIndex = '9999';
-            cursor.style.transition = 'transform 0.1s ease, width 0.2s, height 0.2s';
+            cursor.style.transition = 'transform 0.2s ease, width 0.2s, height 0.2s';
+            // Reset transform
+            cursor.style.transform = 'scale(1)';
         } else {
             cursor.style.display = 'none';
         }
@@ -78,14 +78,17 @@
         el.addEventListener('mouseenter', () => {
             if (isDesktop()) {
                 cursor.classList.add('hover');
-                // Efeito hover levemente menor que o original (antes 2x, agora 1.6x)
-                cursor.style.transform = 'scale(1.6)';
+                // Expansão maior: escala 2.2 (antes 1.6)
+                cursor.style.transform = 'scale(2.2)';
+                // Opcional: aumentar a borda no hover
+                cursor.style.borderWidth = '2px';
             }
         });
         el.addEventListener('mouseleave', () => {
             if (isDesktop()) {
                 cursor.classList.remove('hover');
                 cursor.style.transform = 'scale(1)';
+                cursor.style.borderWidth = '1.5px';
             }
         });
     });
@@ -104,14 +107,12 @@
     function activateSection(sectionId) {
         if (currentSection === sectionId) return;
 
-        // Desativa seção atual
         const activeSection = document.querySelector('.section.active');
         if (activeSection) {
             activeSection.classList.remove('active');
             resetSectionAnimations(activeSection);
         }
 
-        // Ativa nova seção
         const newSection = document.getElementById(sectionId);
         if (newSection) {
             newSection.classList.add('active');
@@ -120,7 +121,6 @@
             }, 100);
         }
 
-        // Atualiza links ativos
         navItems.forEach(link => {
             link.classList.remove('active');
             if (link.dataset.section === sectionId) {
@@ -138,7 +138,6 @@
             el.classList.remove('typing', 'typing-done');
             el.textContent = '';
         });
-        // Força reset da animação do glass-card
         const glassCard = section.querySelector('.glass-card');
         if (glassCard) {
             glassCard.style.animation = 'none';
@@ -160,7 +159,7 @@
     }
 
     // ============================================================
-    // EFEITO DE DIGITAÇÃO (velocidade ajustável para responsividade)
+    // EFEITO DE DIGITAÇÃO
     // ============================================================
     function typeTitle(element) {
         const text = element.dataset.text;
@@ -168,9 +167,8 @@
 
         element.classList.add('typing');
         let index = 0;
-        // Velocidade um pouco mais rápida em mobile para evitar atrasos na quebra de linha
         const isMobile = window.matchMedia('(max-width: 600px)').matches;
-        const speed = isMobile ? 30 : 50; // ms por caractere
+        const speed = isMobile ? 30 : 50;
 
         function type() {
             if (index < text.length) {
@@ -244,8 +242,6 @@
 
 /**
  * CÓDIGO FONTE — Som de clique (Web Audio API)
- * Feedback sonoro sutil ao interagir com links e botões.
- * (sem alterações, mantido original)
  */
 (function() {
     let audioCtx = null;
