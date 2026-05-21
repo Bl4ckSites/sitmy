@@ -1,6 +1,6 @@
 {
-  "name": "Dense66",
-  "short_name": "Dense66",
+  "name": "Dense",
+  "short_name": "66",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -15,7 +15,7 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "background_color": "#000000",
   "display": "standalone"
 }
