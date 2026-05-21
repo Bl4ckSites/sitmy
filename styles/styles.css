@@ -487,3 +487,107 @@ body {
 body, #app, #main-content {
     overflow-x: hidden;
 }
+
+
+
+/* ============================================================
+   RESPONSIVIDADE PRINCIPAL (até 900px)
+   ============================================================ */
+@media (max-width: 900px) {
+    :root { --sidebar-width: 0px; }
+
+    #sidebar {
+        width: 100%;
+        height: var(--header-height);
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1rem;
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        background: rgba(10,12,15,0.8);
+        backdrop-filter: blur(12px);
+        z-index: 100;
+    }
+    #sidebar-header { margin: 0; }
+    #sidebar-nav {
+        flex-direction: row;
+        gap: 0.3rem;
+        overflow-x: auto;
+        flex: 1;
+        justify-content: flex-end;
+        margin: 0 0.5rem;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    #sidebar-nav::-webkit-scrollbar { display: none; }
+    .nav-item {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    .nav-divider { display: none; }
+    #sidebar-footer { display: none; }
+
+    #main-content {
+        margin-left: 0;
+        margin-top: var(--header-height);
+        padding: 1.5rem;
+        max-width: 100%;
+    }
+    .glass-card { padding: 1.5rem; border-radius: var(--radius-md); }
+    .process-flow { flex-direction: column; gap: 0.6rem; }
+    .flow-arrow { transform: rotate(90deg); }
+}
+
+/* ============================================================
+   TELAS PEQUENAS (≤ 500px) — remove título DENSE66 e ajusta botões
+   ============================================================ */
+@media (max-width: 500px) {
+    /* Remove completamente o título */
+    .logo {
+        display: none;
+    }
+    /* Sidebar mais compacta */
+    #sidebar {
+        padding: 0 0.75rem;
+        justify-content: flex-end;
+    }
+    /* Navegação ocupa toda largura restante, centralizada */
+    #sidebar-nav {
+        justify-content: center;
+        gap: 0.4rem;
+        margin: 0;
+        flex: 1;
+    }
+    .nav-item {
+        font-size: 0.7rem;
+        padding: 0.35rem 0.5rem;
+    }
+    /* Ajuste do conteúdo principal */
+    #main-content {
+        padding: 1.2rem;
+    }
+    .glass-card {
+        padding: 1.2rem;
+    }
+    .card-title {
+        font-size: 1.2rem;
+    }
+    .contact-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.7rem;
+    }
+}
+
+/* Para telas extremamente pequenas (≤ 360px) - reforço */
+@media (max-width: 360px) {
+    .nav-item {
+        font-size: 0.65rem;
+        padding: 0.3rem 0.4rem;
+    }
+    #sidebar {
+        padding: 0 0.5rem;
+    }
+}
