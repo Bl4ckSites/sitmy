@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DENSE66</title>
+    <meta name="description" content="Desenvolvedor anônimo de sites para criadoras de conteúdo. Foco em performance, privacidade e independência.">
+
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-title" content="Dense66" />
+<link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/animations.css">
+</head>
+<body>
+
+    <!-- Tela de Introdução (Boot Screen) -->
+    <div id="intro-overlay">
+        <div id="intro-content">
+            <h1 id="intro-title" class="mono">DENSE66</h1>
+            <p id="intro-status" class="mono">[ SINAL CRIPTOGRAFADO ]</p>
+        </div>
+    </div>
+
+    <!-- Cursor Personalizado (somente desktop) -->
+    <div id="cursor"></div>
+
+    <!-- Canvas para Partículas de Fundo -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Estrutura Principal -->
+    <div id="app" class="invisible">
+
+        <!-- Menu Lateral (Desktop) / Header (Mobile) -->
+        <aside id="sidebar">
+            <div id="sidebar-header">
+                <a href="#home" class="logo mono">DENSE66</a>
+            </div>
+            <nav id="sidebar-nav">
+                <a href="#home" class="nav-item mono active" data-section="home">Home</a>
+                <hr class="nav-divider">
+                <a href="#about" class="nav-item mono" data-section="about">Sobre</a>
+                <hr class="nav-divider">
+                <a href="#services" class="nav-item mono" data-section="services">Serviços</a>
+                <hr class="nav-divider">
+                <a href="#process" class="nav-item mono" data-section="process">Processo</a>
+                <hr class="nav-divider">
+                <a href="#contact" class="nav-item mono" data-section="contact">Contato</a>
+            </nav>
+            <div id="sidebar-footer">
+                <a href="https://instagram.com/dense_66" target="_blank" class="mono insta-link" aria-label="Instagram">
+                    <i class="ph ph-instagram-logo"></i>
+                </a>
+                <span id="current-year" class="mono">2024</span>
+            </div>
+        </aside>
+
+        <!-- Conteúdo Principal -->
+        <main id="main-content">
+
+            <!-- Seção HOME -->
+            <section id="home" class="section active">
+                <div class="glass-card">
+                    <h2 class="card-title mono typing-title" data-text="Performance e discrição."></h2>
+                    <p class="card-text fade-in-text">
+                        Sou Dense66. Desenvolvo sites rápidos, seguros e 100% independentes para criadoras de conteúdo. Sua privacidade é a minha prioridade. Seu conteúdo, suas regras.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Seção SOBRE -->
+            <section id="about" class="section">
+                <div class="glass-card">
+                    <h2 class="card-title mono typing-title" data-text="Quem opera."></h2>
+                    <p class="card-text fade-in-text">
+                        Não apareço. Não opino. Eu construo a estrutura e desapareço. Meu nome não estará no código final. Nenhum vínculo com o que você publica. Tecnologia silenciosa para proteger sua marca — e sua receita.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Seção SERVIÇOS -->
+            <section id="services" class="section">
+                <div class="glass-card">
+                    <h2 class="card-title mono typing-title" data-text="Módulos disponíveis."></h2>
+                    <p class="card-text fade-in-text" style="margin-bottom: 1.2rem; opacity: 0.9;">
+                        Sites únicos, com identidade própria. Valores acessíveis, nada de templates genéricos.
+                    </p>
+                    <ul class="services-list fade-in-text">
+                        <li><span class="mono highlight">Perfil Único</span> — Elegante, minimalista, com todos os seus links reunidos em um só lugar.</li>
+                        <li><span class="mono highlight">Site Privado</span> — Acesso restrito com login, área de membros e conteúdo exclusivo.</li>
+                        <li><span class="mono highlight">Cards &amp; Apresentações</span> — Site visual com galeria de fotos, cards e mídia em destaque.</li>
+                        <li><span class="mono highlight">Otimização</span> — Seu site ficou lento? Eu reescrevo do zero e devolvo a performance.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Seção PROCESSO -->
+            <section id="process" class="section">
+                <div class="glass-card">
+                    <h2 class="card-title mono typing-title" data-text="Fluxo de trabalho."></h2>
+                    <div class="process-flow fade-in-text">
+                        <div class="flow-node">
+                            <span class="flow-icon"><i class="ph ph-chat-circle-text"></i></span>
+                            <span class="flow-label mono">Briefing Seguro</span>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-node">
+                            <span class="flow-icon"><i class="ph ph-figma-logo"></i></span>
+                            <span class="flow-label mono">Protótipo</span>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-node">
+                            <span class="flow-icon"><i class="ph ph-sliders-horizontal"></i></span>
+                            <span class="flow-label mono">Ajustes</span>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-node">
+                            <span class="flow-icon"><i class="ph ph-lock-key"></i></span>
+                            <span class="flow-label mono">Entrega Silenciosa</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção CONTATO -->
+            <section id="contact" class="section">
+                <div class="glass-card">
+                    <h2 class="card-title mono typing-title" data-text="Iniciar canal seguro."></h2>
+                    <p class="card-text fade-in-text">
+                        Inicie uma conversa privada. Toda informação protegida por confidencialidade.
+                    </p>
+                    <div class="contact-buttons fade-in-text">
+                        <a href="https://t.me/dense4179" target="_blank" class="contact-btn mono">
+                            <i class="ph ph-telegram-logo"></i> TELEGRAM
+                        </a>
+                    </div>
+                    <div class="privacy-indicator fade-in-text">
+                        <span class="red-dot"></span>
+                        <span class="mono">PROTOCOLO DE CONFIDENCIALIDADE ATIVO</span>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/particles.js"></script>
+    <script src="js/loading.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
